@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone')->nullable()->unique();
+            $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('sales')->nullable()->default(0);
@@ -21,10 +21,13 @@ return new class extends Migration {
             $table->boolean('is_active')->default(false);
             $table->boolean('is_archived')->default(false);
             $table->string('avatar_url')->nullable();
+//            $table->string('icon')->nullable();
             $table->string('theme')->nullable()->default('default');
             $table->string('theme_color')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
+
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

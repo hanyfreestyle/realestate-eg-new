@@ -75,7 +75,7 @@ class UserResource extends Resource {
                             type: PhoneNumberType::MOBILE, // قبول الأرقام المحمولة فقط
                             lenient: true
                         )
-                        ->required(),
+                        ->nullable(),
 
                     TextInput::make('password')
                         ->label(__('filament/users.password'))
@@ -110,7 +110,7 @@ class UserResource extends Resource {
             Group::make()->schema([
                 Section::make(__('filament/users.card.User_Information'))->schema([
                     WebpImageUpload::make('avatar_url')
-                        ->uploadDirectory('admin-profile') // تحديد مجلد رفع الصور
+                        ->uploadDirectory('images/user-profile') // تحديد مجلد رفع الصور
                         ->resize(300, 300, 90) // تحديد الأبعاد والجودة
                         ->nullable(),
                 ])->columns(1),
