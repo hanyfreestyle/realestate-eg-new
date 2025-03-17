@@ -1,0 +1,1 @@
+<?phpreturn [    'navigation_group' => 'قائمة جديدة',    'category' => [        'NavigationLabel' => 'إدارة التصنيفات',        'ModelLabel' => 'تصنيف',        'PluralModelLabel' => 'التصنيفات',    ],    'post' => [        'NavigationLabel' => 'إدارة المحتويات',        'ModelLabel' => 'محتوى',        'PluralModelLabel' => 'المحتويات',    ],];

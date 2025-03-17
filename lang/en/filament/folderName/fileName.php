@@ -1,0 +1,1 @@
+<?phpreturn [    'navigation_group' => 'Navigation Group',    'category' => [        'NavigationLabel' => 'Manage Categories',        'ModelLabel' => 'Category',        'PluralModelLabel' => 'Categories',    ],    'post' => [        'NavigationLabel' => 'Manage Contents',        'ModelLabel' => 'Content',        'PluralModelLabel' => 'Contents',    ]];
