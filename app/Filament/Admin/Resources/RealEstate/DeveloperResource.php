@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\RealEstate;
 
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
 use App\Filament\Admin\Resources\RealEstate\DeveloperResource\Pages;
+use App\FilamentCustom\Form\TextNameTextEditor;
 use App\Models\Admin\RealEstate\Developer;
 use App\FilamentCustom\View\PrintDatesWithIaActive;
 use App\FilamentCustom\View\PrintNameWithSlug;
@@ -16,6 +17,7 @@ use App\Helpers\FilamentAstrotomic\Forms\Components\TranslatableTabs;
 use App\Helpers\FilamentAstrotomic\TranslatableTab;
 use Astrotomic\Translatable\Translatable;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\RichEditor;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
@@ -38,8 +40,7 @@ class DeveloperResource extends Resource {
     protected static ?string $model = Developer::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $recordTitleAttribute = 'name:en';
-    // protected static ?string $navigationGroup = 'admin-core';
-    // protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = -9000;
 
     public static function getRecordTitle(?Model $record): Htmlable|string|null {
         return $record->translation->name ?? null;
@@ -47,18 +48,18 @@ class DeveloperResource extends Resource {
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//    public static function getNavigationGroup(): ?string {
-//        return __('filament/folderName/fileName.navigation_group');
-//    }
-//    public static function getNavigationLabel(): string {
-//        return __('filament/folderName/fileName.category.NavigationLabel');
-//    }
-//    public static function getModelLabel(): string {
-//        return __('filament/folderName/fileName.category.ModelLabel');
-//    }
-//    public static function getPluralModelLabel(): string {
-//        return __('filament/folderName/fileName.category.PluralModelLabel');
-//    }
+    public static function getNavigationGroup(): ?string {
+        return __('filament/RealEstate/data.navigation_group');
+    }
+    public static function getNavigationLabel(): string {
+        return __('filament/RealEstate/data.developer.NavigationLabel');
+    }
+    public static function getModelLabel(): string {
+        return __('filament/RealEstate/data.developer.ModelLabel');
+    }
+    public static function getPluralModelLabel(): string {
+        return __('filament/RealEstate/data.developer.PluralModelLabel');
+    }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -72,7 +73,24 @@ class DeveloperResource extends Resource {
                 TranslatableTabs::make('translations')
                     ->availableLocales(['ar', 'en'])
                     ->localeTabSchema(fn(TranslatableTab $tab) => [
-                        ...TextNameWithSlug::make()->getColumns($tab, $translationTable, $updateSlug),
+                        RichEditor::make('des')
+                            ->toolbarButtons([
+                                'attachFiles',
+                                'blockquote',
+                                'bold',
+                                'bulletList',
+                                'codeBlock',
+                                'h2',
+                                'h3',
+                                'italic',
+                                'link',
+                                'orderedList',
+                                'redo',
+                                'strike',
+                                'underline',
+                                'undo',
+                            ]),
+                        ...TextNameTextEditor::make()->getColumns($tab, $translationTable, $updateSlug),
                     ]),
             ])->columnSpan(2),
 
@@ -120,7 +138,6 @@ class DeveloperResource extends Resource {
                 ]),
             ])
             ->recordUrl(fn($record) => static::getTableRecordUrl($record))
-            // ->reorderable('position')
             ->defaultSort('id','desc');
     }
 
@@ -140,7 +157,7 @@ class DeveloperResource extends Resource {
         return [
             'index' => Pages\ListDevelopers::route('/'),
             'create' => Pages\CreateDeveloper::route('/create'),
-            'view' => Pages\ViewDeveloper::route('/{record}'),
+//            'view' => Pages\ViewDeveloper::route('/{record}'),
             'edit' => Pages\EditDeveloper::route('/{record}/edit'),
         ];
     }
