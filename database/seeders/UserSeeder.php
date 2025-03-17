@@ -46,5 +46,7 @@ class UserSeeder extends Seeder {
         loadSeederFromFile('model_has_roles', true);
         loadSeederFromFile('role_has_permissions', true);
         loadSeederFromFile('sessions', true);
+        loadSeederFromFile('developers', true);
+        loadSeederFromFile('developer_translations', true);
     }
 }
