@@ -1,0 +1,1 @@
+<?phpnamespace App\Policies\Admin\DevTools;use App\Models\User;class ExportDatabasePolicy {    public function view(User $user): bool {        return $user->hasRole('super_admin'); // ✅ السماح فقط للمستخدمين الذين لديهم دور "admin"    }}
