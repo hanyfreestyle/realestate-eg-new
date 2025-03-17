@@ -1,0 +1,1 @@
+<?phpnamespace Database\Seeders\Data;use Illuminate\Database\Seeder;class DataCountrySeeder extends Seeder {    public function run(): void {        loadSeederFromFile('data_country');        loadSeederFromFile('data_country_translations');    }}
