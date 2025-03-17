@@ -7,20 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
 
     public function up(): void {
-        Schema::create('developers', function (Blueprint $table) {
+        Schema::create('developer', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string("slug");
-            $table->integer("slug_count")->nullable();
             $table->string("photo")->nullable();
-            $table->string("photo_thum_1")->nullable();
-            $table->integer("projects_count")->default(0);
-            $table->integer("units_count")->default(0);
+            $table->string("photo_thumbnail")->nullable();
             $table->boolean("is_active")->default(true);
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
 
-        Schema::create('developer_translations', function (Blueprint $table) {
+        Schema::create('developer_lang', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('developer_id')->unsigned();
             $table->string('locale')->index();
@@ -29,31 +26,13 @@ return new class extends Migration {
             $table->string('g_title')->nullable();
             $table->text('g_des')->nullable();
             $table->unique(['developer_id', 'locale']);
-            $table->foreign('developer_id')->references('id')->on('developers')->onDelete('cascade');
+            $table->foreign('developer_id')->references('id')->on('developer')->onDelete('cascade');
         });
-
-//        Schema::create('developer_photos', function (Blueprint $table) {
-//            $table->bigIncrements('id');
-//            $table->bigInteger('developer_id')->unsigned();
-//            $table->string("photo")->nullable();
-//            $table->string("photo_thum_1")->nullable();
-//            $table->string("photo_thum_2")->nullable();
-//            $table->string("file_extension")->nullable();
-//            $table->integer("file_size")->nullable();
-//            $table->integer("file_h")->nullable();
-//            $table->integer("file_w")->nullable();
-//            $table->integer("position")->default(0);
-//            $table->integer("is_default")->default(0);
-//            $table->softDeletes();
-//            $table->timestamps();
-//            $table->foreign('developer_id')->references('id')->on('developers')->onDelete('cascade');
-//        });
 
     }
 
     public function down(): void {
-//        Schema::dropIfExists('developer_photos');
-        Schema::dropIfExists('developer_translations');
-        Schema::dropIfExists('developers');
+        Schema::dropIfExists('developer_lang');
+        Schema::dropIfExists('developer');
     }
 };

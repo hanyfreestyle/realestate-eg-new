@@ -4,10 +4,10 @@ namespace App\Enums\RealEstate;
 
 enum EnumsRealEstateDatabaseTable :string {
 
-    case DataDevelopers  = 'developers' ;
+    case DataDevelopers  = 'developer' ;
     case DataDevelopersCash  = 'DataDevelopers_CashList_' ;
-    case DataDevelopersTranslation  = 'developer_translations' ;
-    case DataDevelopersForeignKey  = 'country_id' ;
+    case DataDevelopersTranslation  = 'developer_lang' ;
+    case DataDevelopersForeignKey  = 'developer_id' ;
     case DataDevelopersUpdateSlug = 'DataDevelopersUpdateSlug';
 
 

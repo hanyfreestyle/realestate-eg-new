@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Admin\Resources\RealEstate;
 
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
@@ -22,6 +23,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Filament\Infolists\Components\Section as InfolistSection;
@@ -30,8 +32,9 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
-class DeveloperResource extends Resource{
+class DeveloperResource extends Resource {
     use Translatable;
+
     protected static ?string $model = Developer::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $recordTitleAttribute = 'name:en';
@@ -94,8 +97,8 @@ class DeveloperResource extends Resource{
     public static function table(Table $table): Table {
         return $table
             ->columns([
-                ImageColumnDef::make('photo_thum_1'),
-
+                TextColumn::make('id')->label("#")->sortable()->searchable(),
+                ImageColumnDef::make('photo_thumbnail'),
                 TranslationTextColumn::make('name'),
                 IconColumn::make('is_active')->label(__('filament/def.is_active'))->boolean(),
                 ...CreatedDates::make()->toggleable(true)->getColumns(),
@@ -105,9 +108,6 @@ class DeveloperResource extends Resource{
             ->persistFiltersInSession()
             ->persistSearchInSession()
             ->actions([
-//                ActionGroup::make([
-//
-//                ]),
                 Tables\Actions\ViewAction::make()->iconButton(),
                 Tables\Actions\EditAction::make()->hidden(fn($record) => $record->trashed()),
                 Tables\Actions\DeleteAction::make(),
@@ -121,14 +121,13 @@ class DeveloperResource extends Resource{
             ])
             ->recordUrl(fn($record) => static::getTableRecordUrl($record))
             // ->reorderable('position')
-            ->defaultSort('id');
+            ->defaultSort('id','desc');
     }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-    public static function getRelations(): array
-    {
+    public static function getRelations(): array {
         return [
             //
         ];
@@ -137,9 +136,9 @@ class DeveloperResource extends Resource{
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    public static function getPages(): array{
+    public static function getPages(): array {
         return [
-                        'index' => Pages\ListDevelopers::route('/'),
+            'index' => Pages\ListDevelopers::route('/'),
             'create' => Pages\CreateDeveloper::route('/create'),
             'view' => Pages\ViewDeveloper::route('/{record}'),
             'edit' => Pages\EditDeveloper::route('/{record}/edit'),
@@ -163,8 +162,8 @@ class DeveloperResource extends Resource{
 //                    ->schema([
 //
 //                    ])->columns(5),
-                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns() ,
-                ...PrintDatesWithIaActive::make()->getColumns() ,
+                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
+                ...PrintDatesWithIaActive::make()->getColumns(),
             ]);
     }
 

@@ -12,11 +12,11 @@ class Developer extends Model {
     use TranslatableScopes;
     use SoftDeletes;
 
-    protected $table = "developers";
+    protected $table = "developer";
     protected $primaryKey = 'id';
     protected $translationForeignKey = 'developer_id';
     public array $translatedAttributes = ['name', 'des', 'g_title', 'g_des'];
-    protected $fillable = ['slug', 'photo', 'photo_thum_1', 'is_active', 'deleted_at'];
+    protected $fillable = ['slug', 'photo', 'photo_thumbnail', 'is_active', 'deleted_at'];
 
 
 }
