@@ -34,4 +34,27 @@ if (!function_exists('getFavIcon')) {
         return $defFav;
     }
 }
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+if (!function_exists('getBackgroundsDirectory')) {
+    function getBackgroundsDirectory(): string {
+        $default = 'images/filament/backgrounds/triangles';
+
+        $folderName = config('appConfig.client_name');
+
+        if ($folderName) {
+            $relativePath = "assets/client/{$folderName}/backgrounds";
+            $absolutePath = public_path($relativePath);
+
+            if (File::isDirectory($absolutePath)) {
+                return $relativePath;
+            }
+        }
+
+        return $default;
+    }
+}
+
+
+
 

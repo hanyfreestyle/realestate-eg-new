@@ -72,7 +72,7 @@ class AdminPanelProvider extends PanelProvider {
             ])
             ->plugins([
                 FilamentBackgroundsPlugin::make()->imageProvider(
-                    MyImages::make()->directory('images/filament/backgrounds/triangles') # img or triangles
+                    MyImages::make()->directory(getBackgroundsDirectory()) # img or triangles
                 ),
                 FilamentAstrotomicTranslatablePlugin::make(),
                 FilamentShieldPlugin::make()
