@@ -73,43 +73,12 @@ class DeveloperResource extends Resource {
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function form(Form $form): Form {
 
-        $translationTable = EnumsRealEstateDatabaseTable::DataDevelopersTranslation->value;
         $updateSlug = EnumsRealEstateDatabaseTable::DataDevelopersUpdateSlug->value;
 
         return $form->schema([
             Group::make()->schema([
 
-//                TextInput::make('slug')
-//                    ->label(__('filament/def.label.slug'))
-//                    ->unique(ignoreRecord: true)
-//                    ->live()
-//                    ->extraAttributes(fn() => rtlIfArabic('en'))
-//                    ->disabled(fn() => !auth()->user()->can($updateSlug) && request()->routeIs('*.edit'))
-//                    ->afterStateUpdated(function ($state, callable $set) {
-//                        // نحوِّل القيمة التي أدخلها المستخدم إلى slug ونحقنها في الحقل نفسه
-//                        $set($state, Url_Slug($state));
-//                    })
-//                    ->beforeStateDehydrated(function ($state, callable $set) {
-//                        // نقوم بتحويل القيمة المدخلة إلى slug قبل تخزينها
-//                        $set($state, Url_Slug($state));
-//                    })
-//                    ->required(),
-
-                TextInputSlug::make('slug'),
-
-//                TextInput::make('slug')
-//                    ->label(__('filament/def.label.slug'))
-//                    ->unique(ignoreRecord: true)
-//                    ->extraAttributes(fn() => rtlIfArabic('en'))
-//                    ->disabled(fn() => !auth()->user()->can($updateSlug) && request()->routeIs('*.edit'))
-//                    ->afterStateUpdated(function ($state, callable $set) {
-//                        $slug = Url_Slug($state);
-//                        $set('slug', $slug);
-//                    })
-//                    ->beforeStateDehydrated(function ($state) {
-//                        return Url_Slug($state);
-//                    })
-//                    ->required(),
+                TextInputSlug::make('slug')->permission($updateSlug),
 
                 TranslatableTabs::make('translations')
                     ->availableLocales(['ar', 'en'])
