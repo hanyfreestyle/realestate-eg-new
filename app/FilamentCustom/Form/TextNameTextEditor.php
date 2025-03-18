@@ -25,16 +25,16 @@ class TextNameTextEditor {
                 ->extraAttributes(fn() => rtlIfArabic($tab->getLocale()))
                 ->required(),
 
-            TextInput::make($tab->makeName('g_title'))
-                ->label(__('filament/def.label.g_title'))
-                ->extraAttributes(fn() => rtlIfArabic($tab->getLocale()))
-                ->nullable(),
-
-            Textarea::make($tab->makeName('g_des'))
-                ->label(__('filament/def.label.g_des'))
-                ->rows(6)
-                ->extraAttributes(fn() => rtlIfArabic($tab->getLocale()))
-                ->nullable(),
+//            TextInput::make($tab->makeName('g_title'))
+//                ->label(__('filament/def.label.g_title'))
+//                ->extraAttributes(fn() => rtlIfArabic($tab->getLocale()))
+//                ->nullable(),
+//
+//            Textarea::make($tab->makeName('g_des'))
+//                ->label(__('filament/def.label.g_des'))
+//                ->rows(6)
+//                ->extraAttributes(fn() => rtlIfArabic($tab->getLocale()))
+//                ->nullable(),
 
         ];
     }

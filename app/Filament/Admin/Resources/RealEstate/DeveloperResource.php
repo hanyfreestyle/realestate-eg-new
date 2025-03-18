@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\RealEstate;
 
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
 use App\Filament\Admin\Resources\RealEstate\DeveloperResource\Pages;
+use App\FilamentCustom\Form\CKEditor;
 use App\FilamentCustom\Form\TextNameTextEditor;
 use App\Models\Admin\RealEstate\Developer;
 use App\FilamentCustom\View\PrintDatesWithIaActive;
@@ -51,12 +52,15 @@ class DeveloperResource extends Resource {
     public static function getNavigationGroup(): ?string {
         return __('filament/RealEstate/data.navigation_group');
     }
+
     public static function getNavigationLabel(): string {
         return __('filament/RealEstate/data.developer.NavigationLabel');
     }
+
     public static function getModelLabel(): string {
         return __('filament/RealEstate/data.developer.ModelLabel');
     }
+
     public static function getPluralModelLabel(): string {
         return __('filament/RealEstate/data.developer.PluralModelLabel');
     }
@@ -73,24 +77,16 @@ class DeveloperResource extends Resource {
                 TranslatableTabs::make('translations')
                     ->availableLocales(['ar', 'en'])
                     ->localeTabSchema(fn(TranslatableTab $tab) => [
-                        RichEditor::make('des')
-                            ->toolbarButtons([
-                                'attachFiles',
-                                'blockquote',
-                                'bold',
-                                'bulletList',
-                                'codeBlock',
-                                'h2',
-                                'h3',
-                                'italic',
-                                'link',
-                                'orderedList',
-                                'redo',
-                                'strike',
-                                'underline',
-                                'undo',
-                            ]),
                         ...TextNameTextEditor::make()->getColumns($tab, $translationTable, $updateSlug),
+                        CKEditor::make($tab->makeName('des')) // استخدم دوت نوتيشين
+                        ->label(__('المحتوى'))
+                            ->required()
+                            ->reactive()
+                            ->extraAttributes([
+                                'locale' => $tab->getLocale(),
+                            ]),
+
+
                     ]),
             ])->columnSpan(2),
 
@@ -138,7 +134,7 @@ class DeveloperResource extends Resource {
                 ]),
             ])
             ->recordUrl(fn($record) => static::getTableRecordUrl($record))
-            ->defaultSort('id','desc');
+            ->defaultSort('id', 'desc');
     }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
