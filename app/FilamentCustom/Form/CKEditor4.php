@@ -1,10 +1,10 @@
 <?php
 
 namespace App\FilamentCustom\Form;
-
+use Filament\Forms\Components\Contracts\HasValidationRules;
 use Filament\Forms\Components\Field;
 
-class CKEditor4 extends Field {
+class CKEditor4 extends Field  implements HasValidationRules{
     protected string $view = 'components.custom.ckeditor4';
 
     protected function setUp(): void {
