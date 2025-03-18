@@ -6,5 +6,9 @@ return [
         'ModelLabel' => 'Developer',
         'PluralModelLabel' => 'Developers',
     ],
-
+    'amenities' => [
+        'NavigationLabel' => 'Manage Amenities',
+        'ModelLabel' => 'Amenity',
+        'PluralModelLabel' => 'Amenities',
+    ],
 ];

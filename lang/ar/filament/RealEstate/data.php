@@ -6,4 +6,9 @@ return [
         'ModelLabel' => 'مطور',
         'PluralModelLabel' => 'المطورين',
     ],
+    'amenities' => [
+        'NavigationLabel' => 'إدارة المرافق',
+        'ModelLabel' => 'مرفق',
+        'PluralModelLabel' => 'المرافق',
+    ],
 ];
