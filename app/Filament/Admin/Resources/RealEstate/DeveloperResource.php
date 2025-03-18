@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\RealEstate;
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
 use App\Filament\Admin\Resources\RealEstate\DeveloperResource\Pages;
 use App\FilamentCustom\Form\CKEditor;
+use App\FilamentCustom\Form\CKEditor4;
 use App\FilamentCustom\Form\TextNameTextEditor;
 use App\Models\Admin\RealEstate\Developer;
 use App\FilamentCustom\View\PrintDatesWithIaActive;
@@ -19,6 +20,7 @@ use App\Helpers\FilamentAstrotomic\TranslatableTab;
 use Astrotomic\Translatable\Translatable;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
@@ -74,33 +76,47 @@ class DeveloperResource extends Resource {
 
         return $form->schema([
             Group::make()->schema([
+
+//                CKEditor::make('content'),
+
+
                 TranslatableTabs::make('translations')
                     ->availableLocales(['ar', 'en'])
                     ->localeTabSchema(fn(TranslatableTab $tab) => [
                         ...TextNameTextEditor::make()->getColumns($tab, $translationTable, $updateSlug),
-                        CKEditor::make($tab->makeName('des')) // استخدم دوت نوتيشين
-                        ->label(__('المحتوى'))
+
+//                        Textarea::make($tab->makeName('des')),
+
+//                        CKEditor4::make($tab->makeName('des'))
+//                        ->label(__('المحتوى'))
+//                            ->required()
+//                            ->reactive()
+//                            ->extraAttributes([
+//                                'locale' => $tab->getLocale(),
+//                            ]),
+
+                        CKEditor4::make($tab->makeName('des'))
+                            ->label(__('المحتوى'))
                             ->required()
                             ->reactive()
                             ->extraAttributes([
                                 'locale' => $tab->getLocale(),
                             ]),
 
-
                     ]),
             ])->columnSpan(2),
 
             Group::make()->schema([
                 Section::make()->schema([
-                    WebpImageUpload::make('photo')
-                        ->uploadDirectory('images/quiz')
-                        ->resize(300, 300, 90)
-                        ->nullable(),
-
-                    Toggle::make('is_active')
-                        ->label(__('filament/def.is_active'))
-                        ->default(true)
-                        ->required(),
+//                    WebpImageUpload::make('photo')
+//                        ->uploadDirectory('images/quiz')
+//                        ->resize(300, 300, 90)
+//                        ->nullable(),
+//
+//                    Toggle::make('is_active')
+//                        ->label(__('filament/def.is_active'))
+//                        ->default(true)
+//                        ->required(),
                 ]),
             ])->columnSpan(1),
         ])->columns(3);

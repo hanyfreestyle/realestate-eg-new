@@ -1,55 +1,51 @@
+@php
+    $locale = $getExtraAttributes()['locale'] ?? app()->getLocale();
+@endphp
 <div
     x-data="{
-        editor: null,
         initEditor() {
-            if (this.editor) {
-                this.editor.destroy();
-            }
+            const editorId = '{{ str_replace('.', '_', $getStatePath()) }}';
+            this.$refs.editor.id = editorId;
 
-            const config = {
-                language: '{{ $getLocale() }}',
-                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
-                // ... إعدادات أخرى
-            };
+            CKEDITOR.replace(editorId, {
+                language: '{{ $locale }}',
+                 height: 600,
+                contentsLangDirection: '{{ $locale == 'ar' ? 'rtl' : 'ltr' }}',
+                removePlugins : 'print,save,newpage,flash,another,form',
+                toolbarGroups : [
+                    { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
+                    // { name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+                    { name: 'insert', groups: [ 'insert' ] },
+                    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+                    { name: 'links', groups: [ 'links' ] },
+                    { name: 'colors', groups: [ 'colors' ] },
+                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                    { name: 'styles', groups: [ 'styles' ] },
+                    { name: 'tools', groups: [ 'tools' ] },
+                ],
+            });
+            CKEDITOR.config.versionCheck = false ;
+            CKEDITOR.config.fillEmptyBlocks = false;
+            CKEDITOR.config.removeButtons = 'Save,NewPage,ExportPdf,Preview,Print,Templates,About,Smiley,SpecialChar,PageBreak,Iframe,Language,BidiRtl,BidiLtr,Subscript,Superscript,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Find,Replace,SelectAll,Scayt';
 
-            ClassicEditor
-                .create(this.$refs.editor, config)
-                .then(editor => {
-                    this.editor = editor;
-                    editor.model.document.on('change:data', () => {
-                        this.$dispatch('input', editor.getData());
-                    });
-                })
-                .catch(console.error);
+            CKEDITOR.instances[editorId].on('change', function() {
+                const data = CKEDITOR.instances[editorId].getData();
+                @this.set('{{ $getStatePath() }}', data);
+            });
+
         }
     }"
-    x-init="
-        // تهيئة المحرر عند التحميل الأولي
-        initEditor();
-
-        // إعادة التهيئة عند تغيير التبويب
-        Livewire.hook('element.updated', (el, component) => {
-            if (el.getAttribute('wire:id') === $wire.__instance.id) {
-                initEditor();
-            }
-        });
-    "
-    wire:ignore.self
-    style="position: relative;"
+    x-init="initEditor()"
+    wire:ignore
 >
-    <div x-ref="editor" id="ckeditor-{{ $getLocale() }}">{!! $getState() !!}</div>
+    <textarea
+        x-ref="editor"
+        id="{{ str_replace('.', '_', $getStatePath()) }}"
+        name="{{ $getStatePath() }}"
+    >{!! $getState() !!}</textarea>
 </div>
 
-@pushOnce('scripts')
-<script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
-<style>
-    .ck-editor__editable {
-        min-height: 200px;
-        background: white !important;
-        color: #1f2937 !important;
-    }
-    .ck.ck-toolbar {
-        background: #f3f4f6 !important;
-    }
-</style>
-@endPushOnce
+@push('scripts')
+    <script src="{{defAdminAssets('ckeditor/ckeditor.js')}}"></script>
+@endpush

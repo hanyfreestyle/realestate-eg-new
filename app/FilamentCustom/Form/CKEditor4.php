@@ -10,13 +10,9 @@ class CKEditor4 extends Field {
     protected function setUp(): void {
         parent::setUp();
 
-        $this->afterStateHydrated(function (CKEditor $component, $state) {
+        $this->afterStateHydrated(function (CKEditor4 $component, $state) {
             $component->state($state ?? '');
         });
-    }
-
-    public function getLocale(): string {
-        return $this->getExtraAttributes()['locale'] ?? app()->getLocale();
     }
 
 }

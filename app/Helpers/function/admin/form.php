@@ -1,4 +1,10 @@
 <?php
+if (!function_exists('defAdminAssets')) {
+    function defAdminAssets($path, $secure = null): string {
+        return app('url')->asset('assets/admin/' . $path, $secure);
+    }
+}
+
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 if (!function_exists('rtlIfArabic')) {
