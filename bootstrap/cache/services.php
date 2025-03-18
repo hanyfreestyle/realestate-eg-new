@@ -51,10 +51,12 @@
     47 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
     48 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     49 => 'Spatie\\Permission\\PermissionServiceProvider',
-    50 => 'Swis\\Filament\\Backgrounds\\FilamentBackgroundsServiceProvider',
-    51 => 'Ysfkaya\\FilamentPhoneInput\\FilamentPhoneInputServiceProvider',
-    52 => 'App\\Providers\\AppServiceProvider',
-    53 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    50 => 'Staudenmeir\\LaravelAdjacencyList\\IdeHelperServiceProvider',
+    51 => 'Staudenmeir\\LaravelCte\\DatabaseServiceProvider',
+    52 => 'Swis\\Filament\\Backgrounds\\FilamentBackgroundsServiceProvider',
+    53 => 'Ysfkaya\\FilamentPhoneInput\\FilamentPhoneInputServiceProvider',
+    54 => 'App\\Providers\\AppServiceProvider',
+    55 => 'App\\Providers\\Filament\\AdminPanelProvider',
   ),
   'eager' => 
   array (
@@ -93,10 +95,11 @@
     32 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
     33 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     34 => 'Spatie\\Permission\\PermissionServiceProvider',
-    35 => 'Swis\\Filament\\Backgrounds\\FilamentBackgroundsServiceProvider',
-    36 => 'Ysfkaya\\FilamentPhoneInput\\FilamentPhoneInputServiceProvider',
-    37 => 'App\\Providers\\AppServiceProvider',
-    38 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    35 => 'Staudenmeir\\LaravelCte\\DatabaseServiceProvider',
+    36 => 'Swis\\Filament\\Backgrounds\\FilamentBackgroundsServiceProvider',
+    37 => 'Ysfkaya\\FilamentPhoneInput\\FilamentPhoneInputServiceProvider',
+    38 => 'App\\Providers\\AppServiceProvider',
+    39 => 'App\\Providers\\Filament\\AdminPanelProvider',
   ),
   'deferred' => 
   array (
@@ -252,6 +255,7 @@
     'Laravel\\Sail\\Console\\InstallCommand' => 'Laravel\\Sail\\SailServiceProvider',
     'Laravel\\Sail\\Console\\PublishCommand' => 'Laravel\\Sail\\SailServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
+    'Staudenmeir\\LaravelAdjacencyList\\Barryvdh\\LaravelIdeHelper\\Console\\ModelsCommand' => 'Staudenmeir\\LaravelAdjacencyList\\IdeHelperServiceProvider',
   ),
   'when' => 
   array (
@@ -298,6 +302,9 @@
     array (
     ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 
+    array (
+    ),
+    'Staudenmeir\\LaravelAdjacencyList\\IdeHelperServiceProvider' => 
     array (
     ),
   ),

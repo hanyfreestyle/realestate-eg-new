@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(DataSeeder::class);
         $this->call(RealEstateDeveloperSeeder::class);
         $this->call(RealEstateAmenitySeeder::class);
+        $this->call(RealEstateLocationSeeder::class);
 
     }
 }
