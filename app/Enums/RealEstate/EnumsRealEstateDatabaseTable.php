@@ -16,4 +16,10 @@ enum EnumsRealEstateDatabaseTable :string {
     case DataAmenitiesForeignKey  = 'amenity_id' ;
     case DataAmenitiesUpdateSlug = 'update_slug_real::estate::amenity';
 
+
+    case DataLocation  = 'location' ;
+    case DataLocationCash  = 'DataLocation_CashList_' ;
+    case DataLocationTranslation  = 'location_lang' ;
+    case DataLocationForeignKey  = 'location_id' ;
+    case DataLocationUpdateSlug = 'update_slug_real::estate::location';
 }

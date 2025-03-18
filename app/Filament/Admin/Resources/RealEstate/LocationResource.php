@@ -2,7 +2,10 @@
 
 namespace App\Filament\Admin\Resources\RealEstate;
 
+use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
 use App\Filament\Admin\Resources\RealEstate\LocationResource\Pages;
+use App\FilamentCustom\Form\TextInputSlug;
+use App\FilamentCustom\Form\TextNameTextEditor;
 use App\Models\Admin\RealEstate\Location;
 use App\FilamentCustom\View\PrintDatesWithIaActive;
 use App\FilamentCustom\View\PrintNameWithSlug;
@@ -65,26 +68,22 @@ class LocationResource extends Resource {
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function form(Form $form): Form {
 
-//        $translationTable = EnumsQuizDatabaseTable::DataQuizDataClassTranslation->value;
-//        $updateSlug = EnumsQuizDatabaseTable::DataQuizDataClassUpdateSlug->value;
+        $updateSlug = EnumsRealEstateDatabaseTable::DataLocationUpdateSlug->value;
 
         return $form->schema([
             Group::make()->schema([
+                TextInputSlug::make('slug')->permission($updateSlug),
+
                 TranslatableTabs::make('translations')
                     ->availableLocales(['ar', 'en'])
                     ->localeTabSchema(fn(TranslatableTab $tab) => [
-                        ...TextNameWithSlug::make()->getColumns($tab, $translationTable, $updateSlug),
+                        ...TextNameTextEditor::make()->getColumns($tab),
                     ]),
             ])->columnSpan(2),
 
             Group::make()->schema([
                 Section::make()->schema([
                     WebpImageUpload::make('photo')
-                        ->uploadDirectory('images/quiz')
-                        ->resize(300, 300, 90)
-                        ->nullable(),
-
-                    WebpImageUpload::make('icon')
                         ->uploadDirectory('images/quiz')
                         ->resize(300, 300, 90)
                         ->nullable(),
@@ -115,9 +114,6 @@ class LocationResource extends Resource {
             ->persistFiltersInSession()
             ->persistSearchInSession()
             ->actions([
-//                ActionGroup::make([
-//
-//                ]),
                 Tables\Actions\ViewAction::make()->iconButton(),
                 Tables\Actions\EditAction::make()->hidden(fn($record) => $record->trashed()),
                 Tables\Actions\DeleteAction::make(),
@@ -150,7 +146,7 @@ class LocationResource extends Resource {
         return [
             'index' => Pages\ListLocations::route('/'),
             'create' => Pages\CreateLocation::route('/create'),
-            'view' => Pages\ViewLocation::route('/{record}'),
+//            'view' => Pages\ViewLocation::route('/{record}'),
             'edit' => Pages\EditLocation::route('/{record}/edit'),
         ];
     }
@@ -168,10 +164,6 @@ class LocationResource extends Resource {
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
-//                InfolistSection::make('')
-//                    ->schema([
-//
-//                    ])->columns(5),
                 ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
                 ...PrintDatesWithIaActive::make()->getColumns(),
             ]);
