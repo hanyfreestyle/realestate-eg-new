@@ -3,7 +3,11 @@
 namespace App\Enums\RealEstate;
 
 
+use App\Traits\Admin\Helper\EnumHasLabelOptionsTrait;
+
 enum EnumPropertyType: string {
+    use EnumHasLabelOptionsTrait;
+
     case Apartment = 'apartment';
     case Duplex = 'duplex';
     case Studio = 'studio';

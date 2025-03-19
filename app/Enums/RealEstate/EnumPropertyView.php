@@ -3,7 +3,10 @@
 namespace App\Enums\RealEstate;
 
 
+use App\Traits\Admin\Helper\EnumHasLabelOptionsTrait;
+
 enum EnumPropertyView: string {
+    use EnumHasLabelOptionsTrait;
 
     case MainStreet = 'main-street';
     case SeaView = 'seaview';

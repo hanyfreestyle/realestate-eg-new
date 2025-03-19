@@ -3,7 +3,10 @@
 namespace App\Enums\RealEstate;
 
 
+use App\Traits\Admin\Helper\EnumHasLabelOptionsTrait;
+
 enum EnumProjectStatus: string {
+    use EnumHasLabelOptionsTrait;
     case UnderConstruction = 'under-construction';
     case Completed = 'completed';
 

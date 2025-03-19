@@ -2,7 +2,10 @@
 
 namespace App\Enums\RealEstate;
 
+use App\Traits\Admin\Helper\EnumHasLabelOptionsTrait;
+
 enum EnumsRealEstateDatabaseTable :string {
+    use EnumHasLabelOptionsTrait;
 
     case DataDevelopers  = 'developer' ;
     case DataDevelopersCash  = 'DataDevelopers_CashList_' ;

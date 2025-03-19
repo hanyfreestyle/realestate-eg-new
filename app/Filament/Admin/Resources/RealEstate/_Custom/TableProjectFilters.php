@@ -13,7 +13,6 @@ class TableProjectFilters {
 
     protected bool $printLabel = true;
 
-
     public static function make(): static {
         return new static();
     }
@@ -31,11 +30,7 @@ class TableProjectFilters {
         return [
             self::applyLabelOrPlaceholder(
                 SelectFilter::make('project_type')
-                    ->options(
-                        collect(EnumProjectType::cases())->mapWithKeys(fn($case) => [
-                            $case->value => $case->label()
-                        ])->toArray()
-                    )
+                    ->options(EnumProjectType::options())
                     ->multiple()
                     ->searchable()
                     ->preload(),
@@ -44,11 +39,7 @@ class TableProjectFilters {
             ),
             self::applyLabelOrPlaceholder(
                 SelectFilter::make('status')
-                    ->options(
-                        collect(EnumProjectStatus::cases())->mapWithKeys(fn($case) => [
-                            $case->value => $case->label()
-                        ])->toArray()
-                    )
+                    ->options(EnumProjectStatus::options())
                     ->multiple()
                     ->searchable()
                     ->preload(),

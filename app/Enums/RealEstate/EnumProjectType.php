@@ -3,7 +3,11 @@
 namespace App\Enums\RealEstate;
 
 
+use App\Traits\Admin\Helper\EnumHasLabelOptionsTrait;
+
 enum EnumProjectType: string {
+    use EnumHasLabelOptionsTrait;
+
     case Residential = 'residential';
     case Vacation = 'vacation';
     case Commercial = 'commercial';

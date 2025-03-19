@@ -8,7 +8,6 @@ use Filament\Tables\Columns\TextColumn;
 class TableProjectToggleable {
     protected bool $toggleable = true;
 
-
     public static function make(): static {
         return new static();
     }
