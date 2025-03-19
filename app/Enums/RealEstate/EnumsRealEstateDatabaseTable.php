@@ -22,4 +22,12 @@ enum EnumsRealEstateDatabaseTable :string {
     case DataLocationTranslation  = 'location_lang' ;
     case DataLocationForeignKey  = 'location_id' ;
     case DataLocationUpdateSlug = 'update_slug_real::estate::location';
+
+    case DataProjects  = 'listings' ;
+    case DataProjectsCash  = 'DataProjects_CashList_' ;
+    case DataProjectsTranslation  = 'listing_translations' ;
+    case DataProjectsForeignKey  = 'listing_id' ;
+    case DataProjectsUpdateSlug = 'update_slug_real::estate::project';
+    case DataProjectsUnitType = 'project';
+
 }

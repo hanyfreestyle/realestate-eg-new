@@ -2,6 +2,7 @@
 
 namespace App\Models\Admin\RealEstate;
 
+use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
 use App\Traits\Admin\Query\TranslatableScopes;
 use Astrotomic\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Listing extends Model {
     use SoftDeletes;
@@ -22,6 +24,23 @@ class Listing extends Model {
     public array $translatedAttributes = ['name', 'des', 'g_title', 'g_des'];
     protected $fillable = ['listing_type', 'parent_id', 'location_id', 'developer_id', 'slug', 'slider_images_dir', 'slider_active', 'photo', 'photo_thum_1', 'youtube_url', 'price', 'area', 'baths', 'rooms', 'unit_status', 'status', 'project_type', 'units_count', 'property_type', 'view', 'latitude', 'longitude', 'delivery_date', 'is_published', 'is_featured', 'published_at', 'amenity', 'deleted_at'];
 
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    protected static function booted() {
+        $CashKey = EnumsRealEstateDatabaseTable::DataProjectsCash->value;
+
+        static::saved(function ($model) use ($CashKey) {
+            foreach (config('app.admin_lang') as $key => $value) {
+                Cache::forget($CashKey . $key);
+            }
+        });
+        
+        static::deleted(function ($model) use ($CashKey){
+            foreach (config('app.admin_lang') as $key => $value) {
+                Cache::forget($CashKey . $key);
+            }
+        });
+    }
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     protected function amenity(): Attribute {
@@ -46,6 +65,14 @@ class Listing extends Model {
 
     public function project() {
         return $this->belongsTo(Listing::class, 'parent_id')->where('listing_type', 'Project');
+    }
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    public function location() {
+        return $this->belongsTo(Location::class);
+    }
+    public function developer() {
+        return $this->belongsTo(Developer::class);
     }
 
 //#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
