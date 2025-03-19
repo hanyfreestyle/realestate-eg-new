@@ -2,6 +2,9 @@
 
 namespace App\Filament\Admin\Resources\RealEstate;
 
+use App\Enums\RealEstate\EnumProjectType;
+use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectFilters;
+use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectToggleable;
 use App\Filament\Admin\Resources\RealEstate\ProjectResource\Pages;
 
 use App\FilamentCustom\View\PrintDatesWithIaActive;
@@ -24,6 +27,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -106,41 +110,47 @@ class ProjectResource extends Resource {
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function table(Table $table): Table {
         return $table
-            ->query(fn () => Listing::query()->projects())
+            ->query(fn() => Listing::query()->projects())
             ->columns([
                 TextColumn::make('id')->label('')->sortable()->searchable(),
                 ImageColumnDef::make('photo_thumbnail'),
                 TranslationTextColumn::make('name')
                     ->label(__('filament/RealEstate/listing.project_label.name'))
-                    ->limit('40'),
+                    ->limit('40')
+                    ->toggleable(isToggledHiddenByDefault: false),
+
+                TextColumn::make('project_type')
+                    ->label(__('filament/RealEstate/listing.project_label.project_type'))
+                    ->formatStateUsing(fn ($state) => EnumProjectType::tryFrom($state)?->label())
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+
                 TextColumn::make('location.name')
                     ->label(__('filament/RealEstate/listing.project_label.location_id'))
-                    ->sortable()->searchable(),
+                    ->sortable()->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+
                 TextColumn::make('developer.name')
                     ->label(__('filament/RealEstate/listing.project_label.developer_id'))
-                    ->sortable()->searchable(),
-                 IconColumn::make('is_published')->label(__('filament/def.is_active'))->boolean(),
+                    ->sortable()->searchable()
+                    ->limit('25')
+                    ->toggleable(isToggledHiddenByDefault: false),
+
+                IconColumn::make('is_published')->label(__('filament/def.is_active'))->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                ...TableProjectToggleable::make()->toggleable(false)->getColumns(),
                 ...CreatedDates::make()->toggleable(true)->getColumns(),
             ])->filters([
-                TrashedFilter::make(),
-//                SelectFilter::make('location_id')
-//                    ->label('Location')
-//                    ->relationship('location', 'location.name')
-//                    ->searchable()
-//                    ->preload(),
-//
-//                SelectFilter::make('developer_id')
-//                    ->label('Developer')
-//                    ->relationship('developer', 'developer.name')
-//                    ->searchable()
-//                    ->preload(),
-            ])
+                TrashedFilter::make()->label(''),
+                ...TableProjectFilters::make()->printLabel(false)->getColumns(),
+            ], layout: FiltersLayout::AboveContent)
             ->persistFiltersInSession()
             ->persistSearchInSession()
             ->actions([
-                Tables\Actions\ViewAction::make()->iconButton(),
-                Tables\Actions\EditAction::make()->hidden(fn($record) => $record->trashed()),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()->hidden(fn($record) => $record->trashed())->iconButton(),
+                Tables\Actions\EditAction::make()->hidden(fn($record) => $record->trashed())->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])
@@ -150,7 +160,7 @@ class ProjectResource extends Resource {
                 ]),
             ])
             ->recordUrl(fn($record) => static::getTableRecordUrl($record))
-            ->defaultSort('id','desc');
+            ->defaultSort('id', 'desc');
     }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

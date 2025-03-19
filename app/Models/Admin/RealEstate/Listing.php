@@ -34,7 +34,7 @@ class Listing extends Model {
                 Cache::forget($CashKey . $key);
             }
         });
-        
+
         static::deleted(function ($model) use ($CashKey){
             foreach (config('app.admin_lang') as $key => $value) {
                 Cache::forget($CashKey . $key);

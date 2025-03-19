@@ -23,7 +23,7 @@ return [
         'baths' => 'عدد الحمامات',
         'rooms' => 'عدد الغرف',
         'unit_status' => 'حالة الوحدة',
-        'status' => 'الحالة',
+        'status' => 'حالة المشروع',
         'project_type' => 'نوع المشروع',
         'units_count' => 'عدد الوحدات',
         'property_type' => 'نوع العقار',
