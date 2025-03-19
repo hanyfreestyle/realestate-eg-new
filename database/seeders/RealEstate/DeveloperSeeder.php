@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\RealEstate;
 
 use App\Models\Admin\RealEstate\Developer;
 use Illuminate\Database\Seeder;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 
-class RealEstateDeveloperSeeder extends Seeder {
+class DeveloperSeeder extends Seeder {
 
     public function run(): void {
 

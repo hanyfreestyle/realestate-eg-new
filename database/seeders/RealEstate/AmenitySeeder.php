@@ -1,6 +1,7 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\RealEstate;
+
 
 use App\Models\Admin\RealEstate\Amenity;
 use Illuminate\Database\Seeder;
@@ -8,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 
-class RealEstateAmenitySeeder extends Seeder {
+class AmenitySeeder extends Seeder {
 
     public function run(): void {
         $loadFormSours = false;
