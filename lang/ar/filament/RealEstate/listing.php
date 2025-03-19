@@ -1,11 +1,23 @@
 <?php
 return [
-    'navigation_group' => 'ادارة الوحدات',
+    'navigation_group' => 'ادارة المشاريع والوحدات',
     'project' => [
         'NavigationLabel' => 'ادارة المشروعات',
         'ModelLabel' => 'مشروع',
         'PluralModelLabel' => 'المشاريع',
     ],
+
+    'unit' => [
+        'NavigationLabel' => 'إدارة وحدات المشاريع',
+        'ModelLabel' => 'وحدة',
+        'PluralModelLabel' => 'وحدات المشاريع',
+    ],
+    'unit_for_sell' => [
+        'NavigationLabel' => 'الوحدات المعروضة للبيع',
+        'ModelLabel' => 'وحدة',
+        'PluralModelLabel' => 'الوحدات المعروضة للبيع',
+    ],
+
     'project_label' => [
         'name' => 'اسم المشروع',
         'listing_type' => 'نوع الإدراج',

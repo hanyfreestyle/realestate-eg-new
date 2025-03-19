@@ -43,7 +43,7 @@ class DeveloperResource extends Resource {
     use Translatable;
 
     protected static ?string $model = Developer::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-wrench-screwdriver';
     protected static ?string $recordTitleAttribute = 'name:en';
     protected static ?int $navigationSort = -9000;
 

@@ -6,6 +6,16 @@ return [
         'ModelLabel' => 'Project',
         'PluralModelLabel' => 'Projects',
     ],
+    'unit' => [
+        'NavigationLabel' => 'Manage Listing',
+        'ModelLabel' => 'Listing',
+        'PluralModelLabel' => 'Listings',
+    ],
+    'unit_for_sell' => [
+        'NavigationLabel' => 'Manage Units For Sale',
+        'ModelLabel' => 'Unit',
+        'PluralModelLabel' => 'Units For Sale',
+    ],
     'project_label' => [
         'name' => 'Project Name',
         'listing_type' => 'Listing Type',

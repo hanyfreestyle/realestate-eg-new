@@ -38,7 +38,7 @@ class LocationResource extends Resource {
     use Translatable;
 
     protected static ?string $model = Location::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-map-pin';
     protected static ?string $recordTitleAttribute = 'name:en';
     protected static ?int $navigationSort = 2;
 

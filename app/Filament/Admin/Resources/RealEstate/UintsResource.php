@@ -1,47 +1,41 @@
 <?php
-
 namespace App\Filament\Admin\Resources\RealEstate;
 
-use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
-use App\Filament\Admin\Resources\RealEstate\_Custom\FormProjectOptions;
-use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectDefault;
-use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectFilters;
-use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectToggleable;
-use App\Filament\Admin\Resources\RealEstate\ProjectResource\Pages;
-use App\Filament\Admin\Resources\RealEstate\ProjectResource\RelationManagers\UnitsRelationManager;
-use App\FilamentCustom\Form\TextInputSlug;
-use App\FilamentCustom\Form\TextNameTextEditor;
+use App\Filament\Admin\Resources\RealEstate\UintsResource\Pages;
+use App\Models\Admin\RealEstate\Listing;
 use App\FilamentCustom\View\PrintDatesWithIaActive;
 use App\FilamentCustom\View\PrintNameWithSlug;
+use App\FilamentCustom\Form\TextNameWithSlug;
 use App\FilamentCustom\Form\WebpImageUpload;
 use App\FilamentCustom\Table\CreatedDates;
 use App\FilamentCustom\Table\ImageColumnDef;
+use App\FilamentCustom\Table\TranslationTextColumn;
 use App\Helpers\FilamentAstrotomic\Forms\Components\TranslatableTabs;
 use App\Helpers\FilamentAstrotomic\TranslatableTab;
-use App\Models\Admin\RealEstate\Listing;
 use Astrotomic\Translatable\Translatable;
 use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Hidden;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Filament\Infolists\Components\Section as InfolistSection;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\TextEntry;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
-
-class ProjectResource extends Resource {
+class UintsResource extends Resource{
     use Translatable;
-
     protected static ?string $model = Listing::class;
-    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
+//    protected static ?string $navigationIcon = 'heroicon-o-key';
     protected static ?string $recordTitleAttribute = 'name:en';
-    protected static ?int $navigationSort = -10000000000000000;
+     protected static ?int $navigationSort = 1;
 
     public static function getRecordTitle(?Model $record): Htmlable|string|null {
         return $record->translation->name ?? null;
@@ -54,44 +48,51 @@ class ProjectResource extends Resource {
     }
 
     public static function getNavigationLabel(): string {
-        return __('filament/RealEstate/listing.project.NavigationLabel');
+        return __('filament/RealEstate/listing.unit.NavigationLabel');
     }
 
     public static function getModelLabel(): string {
-        return __('filament/RealEstate/listing.project.ModelLabel');
+        return __('filament/RealEstate/listing.unit.ModelLabel');
     }
 
     public static function getPluralModelLabel(): string {
-        return __('filament/RealEstate/listing.project.PluralModelLabel');
+        return __('filament/RealEstate/listing.unit.PluralModelLabel');
     }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function form(Form $form): Form {
-        $updateSlug = EnumsRealEstateDatabaseTable::DataProjectsUpdateSlug->value;
+
+//        $translationTable = EnumsQuizDatabaseTable::DataQuizDataClassTranslation->value;
+//        $updateSlug = EnumsQuizDatabaseTable::DataQuizDataClassUpdateSlug->value;
 
         return $form->schema([
-            Hidden::make('listing_type')->default('Project'),
             Group::make()->schema([
-//                Section::make()->schema([
-//                    WebpImageUpload::make('photo')
-//                        ->uploadDirectory('images/quiz')
-//                        ->resize(300, 300, 90)
-//                        ->nullable(),
-//                ]),
-//                ...FormProjectOptions::make()->getColumns(),
-            ])->columnSpan(1),
-
-            Group::make()->schema([
-//                TextInputSlug::make('slug')->permission($updateSlug),
-//                TranslatableTabs::make('translations')
-//                    ->availableLocales(['ar', 'en'])
-//                    ->localeTabSchema(fn(TranslatableTab $tab) => [
-//                        ...TextNameTextEditor::make()->getColumns($tab),
-//                    ]),
+                TranslatableTabs::make('translations')
+                    ->availableLocales(['ar', 'en'])
+                    ->localeTabSchema(fn(TranslatableTab $tab) => [
+                        ...TextNameWithSlug::make()->getColumns($tab, $translationTable, $updateSlug),
+                    ]),
             ])->columnSpan(2),
 
+            Group::make()->schema([
+                Section::make()->schema([
+                    WebpImageUpload::make('photo')
+                        ->uploadDirectory('images/quiz')
+                        ->resize(300, 300, 90)
+                        ->nullable(),
 
+                    WebpImageUpload::make('icon')
+                        ->uploadDirectory('images/quiz')
+                        ->resize(300, 300, 90)
+                        ->nullable(),
+
+                    Toggle::make('is_active')
+                        ->label(__('filament/def.is_active'))
+                        ->default(true)
+                        ->required(),
+                ]),
+            ])->columnSpan(1),
         ])->columns(3);
     }
 
@@ -99,23 +100,24 @@ class ProjectResource extends Resource {
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function table(Table $table): Table {
         return $table
-            ->query(fn() => Listing::query()->projects())
             ->columns([
-                TextColumn::make('id')->label('')->sortable()->searchable(),
                 ImageColumnDef::make('photo_thumbnail'),
-                ...TableProjectDefault::make()->toggleable(false)->getColumns(),
-                ...TableProjectToggleable::make()->toggleable(true)->getColumns(),
+                ImageColumnDef::make('icon')->circular(),
+                TranslationTextColumn::make('name'),
+                IconColumn::make('is_active')->label(__('filament/def.is_active'))->boolean(),
                 ...CreatedDates::make()->toggleable(true)->getColumns(),
             ])->filters([
-                TrashedFilter::make()->label(''),
-                ...TableProjectFilters::make()->printLabel(false)->getColumns(),
-            ], layout: FiltersLayout::AboveContent)
+                TrashedFilter::make(),
+            ])
             ->persistFiltersInSession()
             ->persistSearchInSession()
             ->actions([
-                Tables\Actions\ViewAction::make()->hidden(fn($record) => $record->trashed())->iconButton(),
-                Tables\Actions\EditAction::make()->hidden(fn($record) => $record->trashed())->iconButton(),
-                Tables\Actions\DeleteAction::make()->iconButton(),
+//                ActionGroup::make([
+//
+//                ]),
+                Tables\Actions\ViewAction::make()->iconButton(),
+                Tables\Actions\EditAction::make()->hidden(fn($record) => $record->trashed()),
+                Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])
@@ -125,30 +127,33 @@ class ProjectResource extends Resource {
                 ]),
             ])
             ->recordUrl(fn($record) => static::getTableRecordUrl($record))
-            ->defaultSort('id', 'desc');
+            // ->reorderable('position')
+            ->defaultSort('id');
     }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-    public static function getRelations(): array {
+    public static function getRelations(): array
+    {
         return [
-            UnitsRelationManager::class,
+            //
         ];
     }
-
 
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    public static function getPages(): array {
+    public static function getPages(): array{
         return [
-            'index' => Pages\ListProjects::route('/'),
-            'create' => Pages\CreateProject::route('/create'),
-//            'view' => Pages\ViewProject::route('/{record}'),
-            'edit' => Pages\EditProject::route('/{record}/edit'),
+                        'index' => Pages\ListUints::route('/'),
+            'create' => Pages\CreateUints::route('/create'),
+            'view' => Pages\ViewUints::route('/{record}'),
+            'edit' => Pages\EditUints::route('/{record}/edit'),
         ];
     }
+
+
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -161,8 +166,12 @@ class ProjectResource extends Resource {
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
-                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
-                ...PrintDatesWithIaActive::make()->getColumns(),
+//                InfolistSection::make('')
+//                    ->schema([
+//
+//                    ])->columns(5),
+                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns() ,
+                ...PrintDatesWithIaActive::make()->getColumns() ,
             ]);
     }
 

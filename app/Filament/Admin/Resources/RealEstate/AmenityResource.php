@@ -37,7 +37,7 @@ class AmenityResource extends Resource {
     use Translatable;
 
     protected static ?string $model = Amenity::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-cursor-arrow-rays';
     protected static ?string $recordTitleAttribute = 'name:en';
     protected static ?int $navigationSort = 20;
 

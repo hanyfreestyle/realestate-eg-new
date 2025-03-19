@@ -13,7 +13,7 @@ return [
     ],
 
     'locations' => [
-        'NavigationLabel' => 'إدارة المواقع',
+        'NavigationLabel' => 'ادارة المناطق',
         'ModelLabel' => 'موقع',
         'PluralModelLabel' => 'المواقع',
 
