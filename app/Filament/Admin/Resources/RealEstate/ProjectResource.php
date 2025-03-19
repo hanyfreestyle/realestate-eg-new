@@ -2,43 +2,41 @@
 
 namespace App\Filament\Admin\Resources\RealEstate;
 
-use App\Enums\RealEstate\EnumProjectType;
+use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
+use App\Filament\Admin\Resources\RealEstate\_Custom\FormProjectOptions;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectDefault;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectFilters;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectToggleable;
 use App\Filament\Admin\Resources\RealEstate\ProjectResource\Pages;
-
+use App\FilamentCustom\Form\TextInputSlug;
+use App\FilamentCustom\Form\TextNameTextEditor;
 use App\FilamentCustom\View\PrintDatesWithIaActive;
 use App\FilamentCustom\View\PrintNameWithSlug;
 use App\FilamentCustom\Form\TextNameWithSlug;
 use App\FilamentCustom\Form\WebpImageUpload;
 use App\FilamentCustom\Table\CreatedDates;
 use App\FilamentCustom\Table\ImageColumnDef;
-use App\FilamentCustom\Table\TranslationTextColumn;
 use App\Helpers\FilamentAstrotomic\Forms\Components\TranslatableTabs;
 use App\Helpers\FilamentAstrotomic\TranslatableTab;
 use App\Models\Admin\RealEstate\Listing;
+use App\Traits\RealEstate\ListingCashDataTrait;
 use Astrotomic\Translatable\Translatable;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Toggle;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Filament\Infolists\Components\Section as InfolistSection;
-use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\TextEntry;
-
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Builder;
+
 
 class ProjectResource extends Resource {
     use Translatable;
@@ -73,37 +71,30 @@ class ProjectResource extends Resource {
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function form(Form $form): Form {
-
-//        $translationTable = EnumsQuizDatabaseTable::DataQuizDataClassTranslation->value;
-//        $updateSlug = EnumsQuizDatabaseTable::DataQuizDataClassUpdateSlug->value;
+        $updateSlug = EnumsRealEstateDatabaseTable::DataProjectsUpdateSlug->value;
 
         return $form->schema([
-            Group::make()->schema([
-                TranslatableTabs::make('translations')
-                    ->availableLocales(['ar', 'en'])
-                    ->localeTabSchema(fn(TranslatableTab $tab) => [
-                        ...TextNameWithSlug::make()->getColumns($tab, $translationTable, $updateSlug),
-                    ]),
-            ])->columnSpan(2),
-
+            Hidden::make('listing_type')->default('Project'),
             Group::make()->schema([
                 Section::make()->schema([
                     WebpImageUpload::make('photo')
                         ->uploadDirectory('images/quiz')
                         ->resize(300, 300, 90)
                         ->nullable(),
-
-                    WebpImageUpload::make('icon')
-                        ->uploadDirectory('images/quiz')
-                        ->resize(300, 300, 90)
-                        ->nullable(),
-
-                    Toggle::make('is_active')
-                        ->label(__('filament/def.is_active'))
-                        ->default(true)
-                        ->required(),
                 ]),
+                ...FormProjectOptions::make()->getColumns(),
             ])->columnSpan(1),
+
+            Group::make()->schema([
+                TextInputSlug::make('slug')->permission($updateSlug),
+                TranslatableTabs::make('translations')
+                    ->availableLocales(['ar', 'en'])
+                    ->localeTabSchema(fn(TranslatableTab $tab) => [
+                        ...TextNameTextEditor::make()->getColumns($tab),
+                    ]),
+            ])->columnSpan(2),
+
+
         ])->columns(3);
     }
 
