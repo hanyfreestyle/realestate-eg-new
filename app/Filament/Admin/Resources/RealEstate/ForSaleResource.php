@@ -7,7 +7,7 @@ use App\Filament\Admin\Resources\RealEstate\_Custom\FormUnitsOptions;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitFilters;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsDefault;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsToggleable;
-use App\Filament\Admin\Resources\RealEstate\UintsResource\Pages;
+use App\Filament\Admin\Resources\RealEstate\ForSaleResource\Pages;
 use App\FilamentCustom\Form\TextInputSlug;
 use App\FilamentCustom\Form\TextNameTextEditor;
 use App\Models\Admin\RealEstate\Listing;
@@ -26,8 +26,8 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\TrashedFilter;
@@ -38,13 +38,13 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
-class UintsResource extends Resource {
+class ForSaleResource extends Resource {
     use Translatable;
 
     protected static ?string $model = Listing::class;
-    protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
+    protected static ?string $navigationIcon = 'heroicon-o-key';
     protected static ?string $recordTitleAttribute = 'name:en';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function getRecordTitle(?Model $record): Htmlable|string|null {
         return $record->translation->name ?? null;
@@ -57,15 +57,15 @@ class UintsResource extends Resource {
     }
 
     public static function getNavigationLabel(): string {
-        return __('filament/RealEstate/listing.unit.NavigationLabel');
+        return __('filament/RealEstate/listing.unit_for_sell.NavigationLabel');
     }
 
     public static function getModelLabel(): string {
-        return __('filament/RealEstate/listing.unit.ModelLabel');
+        return __('filament/RealEstate/listing.unit_for_sell.ModelLabel');
     }
 
     public static function getPluralModelLabel(): string {
-        return __('filament/RealEstate/listing.unit.PluralModelLabel');
+        return __('filament/RealEstate/listing.unit_for_sell.PluralModelLabel');
     }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -75,7 +75,7 @@ class UintsResource extends Resource {
         $updateSlug = EnumsRealEstateDatabaseTable::DataProjectsUpdateSlug->value;
 
         return $form->schema([
-            Hidden::make('listing_type')->default('Units'),
+            Hidden::make('listing_type')->default('ForSale'),
 
             Group::make()->schema([
                 Section::make()->schema([
@@ -87,6 +87,7 @@ class UintsResource extends Resource {
                 ...FormUnitsOptions::make()->getColumns(),
             ])->columnSpan(1),
 
+
             Group::make()->schema([
                 TextInputSlug::make('slug')->permission($updateSlug),
                 TranslatableTabs::make('translations')
@@ -96,6 +97,7 @@ class UintsResource extends Resource {
                     ]),
             ])->columnSpan(2),
 
+
         ])->columns(3);
     }
 
@@ -103,15 +105,15 @@ class UintsResource extends Resource {
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function table(Table $table): Table {
         return $table
-            ->query(fn() => Listing::query()->units())
+            ->query(fn() => Listing::query()->ForSale())
             ->columns([
                 TextColumn::make('id')->label('')->sortable()->searchable(),
                 ImageColumnDef::make('photo_thumbnail'),
-                ...TableUnitsDefault::make()->toggleable(false)->getColumns(),
+                ...TableUnitsDefault::make()->isProject(false)->toggleable(false)->getColumns(),
                 ...TableUnitsToggleable::make()->toggleable(true)->getColumns(),
                 ...CreatedDates::make()->toggleable(true)->getColumns(),
             ])->filters([
-                ...TableUnitFilters::make()->printLabel(false)->getColumns(),
+                ...TableUnitFilters::make()->isProject(false)->printLabel(false)->getColumns(),
                 TrashedFilter::make()->label(''),
             ], layout: FiltersLayout::AboveContent)
             ->persistFiltersInSession()
@@ -129,7 +131,8 @@ class UintsResource extends Resource {
                 ]),
             ])
             ->recordUrl(fn($record) => static::getTableRecordUrl($record))
-            ->defaultSort('id', 'desc');
+            // ->reorderable('position')
+            ->defaultSort('id');
     }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -146,10 +149,10 @@ class UintsResource extends Resource {
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function getPages(): array {
         return [
-            'index' => Pages\ListUints::route('/'),
-            'create' => Pages\CreateUints::route('/create'),
-            'view' => Pages\ViewUints::route('/{record}'),
-            'edit' => Pages\EditUints::route('/{record}/edit'),
+            'index' => Pages\ListForSales::route('/'),
+            'create' => Pages\CreateForSale::route('/create'),
+            'view' => Pages\ViewForSale::route('/{record}'),
+            'edit' => Pages\EditForSale::route('/{record}/edit'),
         ];
     }
 
@@ -166,6 +169,10 @@ class UintsResource extends Resource {
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
+//                InfolistSection::make('')
+//                    ->schema([
+//
+//                    ])->columns(5),
                 ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
                 ...PrintDatesWithIaActive::make()->getColumns(),
             ]);
