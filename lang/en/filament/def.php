@@ -38,6 +38,7 @@ return [
     'created_at' => 'Created at',
     'updated_at' => 'Updated at',
     'deleted_at' => 'Deleted at',
+    'published_at' => 'Published at',
     'email_verified_at' => 'Email Verified',
     'is_active' => 'Status',
     'copy' => 'Copy',

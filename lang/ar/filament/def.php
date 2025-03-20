@@ -35,6 +35,7 @@ return [
     'created_at' => 'تاريخ الانشاء',
     'updated_at' => 'تاريخ اخر تحديث',
     'deleted_at' => 'تاريخ الحذف',
+    'published_at' => 'تاريخ النشر',
     'email_verified_at' => 'تاريخ اللتحقق من البريد الالكترونى',
     'is_active' => 'الحالة',
     'copy' => 'نسخ',

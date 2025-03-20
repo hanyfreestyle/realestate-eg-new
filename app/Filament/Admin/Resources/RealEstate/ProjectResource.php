@@ -4,6 +4,9 @@ namespace App\Filament\Admin\Resources\RealEstate;
 
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
 use App\Filament\Admin\Resources\RealEstate\_Custom\FormProjectOptions;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintDatesWithIaActive;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintName;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintProjectInfo;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectDefault;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectFilters;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectToggleable;
@@ -11,8 +14,6 @@ use App\Filament\Admin\Resources\RealEstate\ProjectResource\Pages;
 use App\Filament\Admin\Resources\RealEstate\ProjectResource\RelationManagers\UnitsRelationManager;
 use App\FilamentCustom\Form\TextInputSlug;
 use App\FilamentCustom\Form\TextNameTextEditor;
-use App\FilamentCustom\View\PrintDatesWithIaActive;
-use App\FilamentCustom\View\PrintNameWithSlug;
 use App\FilamentCustom\Form\WebpImageUpload;
 use App\FilamentCustom\Table\CreatedDates;
 use App\FilamentCustom\Table\ImageColumnDef;
@@ -150,7 +151,7 @@ class ProjectResource extends Resource {
         return [
             'index' => Pages\ListProjects::route('/'),
             'create' => Pages\CreateProject::route('/create'),
-//            'view' => Pages\ViewProject::route('/{record}'),
+            'view' => Pages\ViewProject::route('/{record}'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
@@ -166,7 +167,8 @@ class ProjectResource extends Resource {
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
-                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
+                ...PrintName::make()->setUUID(false)->setSeo(true)->getColumns(),
+                ...PrintProjectInfo::make()->getColumns(),
                 ...PrintDatesWithIaActive::make()->getColumns(),
             ]);
     }
