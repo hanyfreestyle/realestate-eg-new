@@ -10,6 +10,23 @@ trait ListingCashDataTrait {
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    public static function getDataProject($IsCash = false) {
+        $TableName = EnumsRealEstateDatabaseTable::DataProjects->value;
+        $TableTranslations = EnumsRealEstateDatabaseTable::DataProjectsTranslation->value;
+        $ForeignKey = EnumsRealEstateDatabaseTable::DataProjectsForeignKey->value;
+        $CashKey = EnumsRealEstateDatabaseTable::DataProjectsCash->value;
+        if ($IsCash) {
+            return Cache::remember($CashKey . app()->getLocale(), 3600, function () use ($TableName, $TableTranslations, $ForeignKey) {
+                return TranslatableScopes::getTranslatedQueryFilter($TableName, $TableTranslations, $ForeignKey, 'listing_type', "Project");
+            });
+        } else {
+            return TranslatableScopes::getTranslatedQueryFilter($TableName, $TableTranslations, $ForeignKey, 'listing_type', "Project");
+        }
+    }
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function getDataDeveloper($IsCash = false) {
         $TableName = EnumsRealEstateDatabaseTable::DataDevelopers->value;
         $TableTranslations = EnumsRealEstateDatabaseTable::DataDevelopersTranslation->value;

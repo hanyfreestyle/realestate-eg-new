@@ -1,7 +1,15 @@
 <?php
+
 namespace App\Filament\Admin\Resources\RealEstate;
 
+use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
+use App\Filament\Admin\Resources\RealEstate\_Custom\FormUnitsOptions;
+use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitFilters;
+use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsDefault;
+use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsToggleable;
 use App\Filament\Admin\Resources\RealEstate\UintsResource\Pages;
+use App\FilamentCustom\Form\TextInputSlug;
+use App\FilamentCustom\Form\TextNameTextEditor;
 use App\Models\Admin\RealEstate\Listing;
 use App\FilamentCustom\View\PrintDatesWithIaActive;
 use App\FilamentCustom\View\PrintNameWithSlug;
@@ -9,18 +17,19 @@ use App\FilamentCustom\Form\TextNameWithSlug;
 use App\FilamentCustom\Form\WebpImageUpload;
 use App\FilamentCustom\Table\CreatedDates;
 use App\FilamentCustom\Table\ImageColumnDef;
-use App\FilamentCustom\Table\TranslationTextColumn;
 use App\Helpers\FilamentAstrotomic\Forms\Components\TranslatableTabs;
 use App\Helpers\FilamentAstrotomic\TranslatableTab;
 use Astrotomic\Translatable\Translatable;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Hidden;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Toggle;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Filament\Infolists\Components\Section as InfolistSection;
@@ -29,13 +38,14 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
-class UintsResource extends Resource{
+class UintsResource extends Resource {
     use Translatable;
+
     protected static ?string $model = Listing::class;
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
 //    protected static ?string $navigationIcon = 'heroicon-o-key';
     protected static ?string $recordTitleAttribute = 'name:en';
-     protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 1;
 
     public static function getRecordTitle(?Model $record): Htmlable|string|null {
         return $record->translation->name ?? null;
@@ -63,17 +73,10 @@ class UintsResource extends Resource{
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function form(Form $form): Form {
 
-//        $translationTable = EnumsQuizDatabaseTable::DataQuizDataClassTranslation->value;
-//        $updateSlug = EnumsQuizDatabaseTable::DataQuizDataClassUpdateSlug->value;
+        $updateSlug = EnumsRealEstateDatabaseTable::DataProjectsUpdateSlug->value;
 
         return $form->schema([
-            Group::make()->schema([
-                TranslatableTabs::make('translations')
-                    ->availableLocales(['ar', 'en'])
-                    ->localeTabSchema(fn(TranslatableTab $tab) => [
-                        ...TextNameWithSlug::make()->getColumns($tab, $translationTable, $updateSlug),
-                    ]),
-            ])->columnSpan(2),
+            Hidden::make('listing_type')->default('Units'),
 
             Group::make()->schema([
                 Section::make()->schema([
@@ -81,18 +84,19 @@ class UintsResource extends Resource{
                         ->uploadDirectory('images/quiz')
                         ->resize(300, 300, 90)
                         ->nullable(),
-
-                    WebpImageUpload::make('icon')
-                        ->uploadDirectory('images/quiz')
-                        ->resize(300, 300, 90)
-                        ->nullable(),
-
-                    Toggle::make('is_active')
-                        ->label(__('filament/def.is_active'))
-                        ->default(true)
-                        ->required(),
                 ]),
+                ...FormUnitsOptions::make()->getColumns(),
             ])->columnSpan(1),
+
+            Group::make()->schema([
+                TextInputSlug::make('slug')->permission($updateSlug),
+                TranslatableTabs::make('translations')
+                    ->availableLocales(['ar', 'en'])
+                    ->localeTabSchema(fn(TranslatableTab $tab) => [
+                        ...TextNameTextEditor::make()->getColumns($tab),
+                    ]),
+            ])->columnSpan(2),
+
         ])->columns(3);
     }
 
@@ -100,24 +104,23 @@ class UintsResource extends Resource{
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function table(Table $table): Table {
         return $table
+            ->query(fn() => Listing::query()->units())
             ->columns([
+                TextColumn::make('id')->label('')->sortable()->searchable(),
                 ImageColumnDef::make('photo_thumbnail'),
-                ImageColumnDef::make('icon')->circular(),
-                TranslationTextColumn::make('name'),
-                IconColumn::make('is_active')->label(__('filament/def.is_active'))->boolean(),
+                ...TableUnitsDefault::make()->toggleable(false)->getColumns(),
+                ...TableUnitsToggleable::make()->toggleable(true)->getColumns(),
                 ...CreatedDates::make()->toggleable(true)->getColumns(),
             ])->filters([
-                TrashedFilter::make(),
-            ])
+                ...TableUnitFilters::make()->printLabel(false)->getColumns(),
+                TrashedFilter::make()->label(''),
+            ], layout: FiltersLayout::AboveContent)
             ->persistFiltersInSession()
             ->persistSearchInSession()
             ->actions([
-//                ActionGroup::make([
-//
-//                ]),
-                Tables\Actions\ViewAction::make()->iconButton(),
-                Tables\Actions\EditAction::make()->hidden(fn($record) => $record->trashed()),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()->hidden(fn($record) => $record->trashed())->iconButton(),
+                Tables\Actions\EditAction::make()->hidden(fn($record) => $record->trashed())->iconButton(),
+                Tables\Actions\DeleteAction::make()->iconButton(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])
@@ -127,15 +130,13 @@ class UintsResource extends Resource{
                 ]),
             ])
             ->recordUrl(fn($record) => static::getTableRecordUrl($record))
-            // ->reorderable('position')
-            ->defaultSort('id');
+            ->defaultSort('id', 'desc');
     }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-    public static function getRelations(): array
-    {
+    public static function getRelations(): array {
         return [
             //
         ];
@@ -144,9 +145,9 @@ class UintsResource extends Resource{
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    public static function getPages(): array{
+    public static function getPages(): array {
         return [
-                        'index' => Pages\ListUints::route('/'),
+            'index' => Pages\ListUints::route('/'),
             'create' => Pages\CreateUints::route('/create'),
             'view' => Pages\ViewUints::route('/{record}'),
             'edit' => Pages\EditUints::route('/{record}/edit'),
@@ -166,12 +167,8 @@ class UintsResource extends Resource{
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
-//                InfolistSection::make('')
-//                    ->schema([
-//
-//                    ])->columns(5),
-                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns() ,
-                ...PrintDatesWithIaActive::make()->getColumns() ,
+                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
+                ...PrintDatesWithIaActive::make()->getColumns(),
             ]);
     }
 

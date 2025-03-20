@@ -59,6 +59,10 @@ class Listing extends Model {
         return $query->where('listing_type', 'Unit');
     }
 
+    public function scopeForSale($query) {
+        return $query->where('listing_type', 'ForSale');
+    }
+
     public function units() {
         return $this->hasMany(Listing::class, 'parent_id')->where('listing_type', 'Unit');
     }
@@ -66,6 +70,7 @@ class Listing extends Model {
     public function project() {
         return $this->belongsTo(Listing::class, 'parent_id')->where('listing_type', 'Project');
     }
+
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public function location() {

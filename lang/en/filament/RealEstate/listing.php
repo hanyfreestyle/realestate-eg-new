@@ -19,7 +19,7 @@ return [
     'project_label' => [
         'name' => 'Project Name',
         'listing_type' => 'Listing Type',
-        'parent_id' => 'Parent ID',
+        'parent_id' => 'Project Name',
         'location_id' => 'Location',
         'developer_id' => 'Developer',
         'slug' => 'Slug',
@@ -45,6 +45,12 @@ return [
         'is_featured' => 'Is Featured',
         'published_at' => 'Published At',
         'amenity' => 'Amenity',
+    ],
+
+
+    'units_label' => [
+        'name' => 'Units Name',
+
     ],
 
     // Options

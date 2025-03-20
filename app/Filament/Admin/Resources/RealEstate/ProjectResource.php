@@ -73,22 +73,22 @@ class ProjectResource extends Resource {
         return $form->schema([
             Hidden::make('listing_type')->default('Project'),
             Group::make()->schema([
-//                Section::make()->schema([
-//                    WebpImageUpload::make('photo')
-//                        ->uploadDirectory('images/quiz')
-//                        ->resize(300, 300, 90)
-//                        ->nullable(),
-//                ]),
-//                ...FormProjectOptions::make()->getColumns(),
+                Section::make()->schema([
+                    WebpImageUpload::make('photo')
+                        ->uploadDirectory('images/quiz')
+                        ->resize(300, 300, 90)
+                        ->nullable(),
+                ]),
+                ...FormProjectOptions::make()->getColumns(),
             ])->columnSpan(1),
 
             Group::make()->schema([
-//                TextInputSlug::make('slug')->permission($updateSlug),
-//                TranslatableTabs::make('translations')
-//                    ->availableLocales(['ar', 'en'])
-//                    ->localeTabSchema(fn(TranslatableTab $tab) => [
-//                        ...TextNameTextEditor::make()->getColumns($tab),
-//                    ]),
+                TextInputSlug::make('slug')->permission($updateSlug),
+                TranslatableTabs::make('translations')
+                    ->availableLocales(['ar', 'en'])
+                    ->localeTabSchema(fn(TranslatableTab $tab) => [
+                        ...TextNameTextEditor::make()->getColumns($tab),
+                    ]),
             ])->columnSpan(2),
 
 

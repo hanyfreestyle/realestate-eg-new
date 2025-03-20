@@ -21,7 +21,7 @@ return [
     'project_label' => [
         'name' => 'اسم المشروع',
         'listing_type' => 'نوع الإدراج',
-        'parent_id' => 'المعرف الأب',
+        'parent_id' => 'اسم المشروع',
         'location_id' => 'الموقع',
         'developer_id' => 'المطور',
         'slug' => 'المُعرف الفريد (Slug)',
@@ -47,6 +47,10 @@ return [
         'is_featured' => 'مميز',
         'published_at' => 'تاريخ النشر',
         'amenity' => 'الخدمات',
+    ],
+    'units_label' => [
+        'name' => 'اسم الوحدة',
+
     ],
 
     // Options
