@@ -47,6 +47,9 @@ class ProjectResource extends Resource {
         return $record->translation->name ?? null;
     }
 
+    public static function getPermissionPrefix(): ?string {
+        return 'project'; // اسم مخصص للـ Project
+    }
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function getNavigationGroup(): ?string {

@@ -14,6 +14,7 @@
                             <h3 class="font-bold text-lg mb-2 text-gray-800 dark:text-gray-100">{{ $fileItem->title }}</h3>
                             <p class="mb-2">{{$logInfo['soursLogPrint']}}</p>
                             <div class="mt-4 flex gap-3">
+{{--                                @dd(File::exists(base_path($fileItem->is_exist)))--}}
                                 @if(File::exists(base_path($fileItem->is_exist ?? null)))
                                     @if ($fileItem->copy)
                                         @if(isset($logInfo['soursLogTime']) and isset($logInfo['backUpLogTime']) and ($logInfo['soursLogTime'] == $logInfo['backUpLogTime']))

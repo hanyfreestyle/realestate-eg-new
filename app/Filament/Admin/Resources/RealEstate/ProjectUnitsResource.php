@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Admin\Resources\RealEstate;
 
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
@@ -40,8 +41,9 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectUnitsResource extends Resource{
+class ProjectUnitsResource extends Resource {
     use Translatable;
+
     protected static ?string $model = Listing::class;
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
     protected static ?string $recordTitleAttribute = 'name:en';
@@ -50,6 +52,7 @@ class ProjectUnitsResource extends Resource{
     public static function getRecordTitle(?Model $record): Htmlable|string|null {
         return $record->translation->name ?? null;
     }
+
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -136,9 +139,9 @@ class ProjectUnitsResource extends Resource{
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    public static function getPages(): array{
+    public static function getPages(): array {
         return [
-                        'index' => Pages\ListProjectUnits::route('/'),
+            'index' => Pages\ListProjectUnits::route('/'),
             'create' => Pages\CreateProjectUnits::route('/create'),
             'view' => Pages\ViewProjectUnits::route('/{record}'),
             'edit' => Pages\EditProjectUnits::route('/{record}/edit'),
@@ -158,8 +161,8 @@ class ProjectUnitsResource extends Resource{
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
-                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns() ,
-                ...PrintDatesWithIaActive::make()->getColumns() ,
+                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
+                ...PrintDatesWithIaActive::make()->getColumns(),
             ]);
     }
 
