@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Filament\Admin\Resources\RealEstate\UintsResource\Pages;
+namespace App\Filament\Admin\Resources\RealEstate\ProjectUnitsResource\Pages;
 
-use App\Filament\Admin\Resources\RealEstate\UintsResource;
+use App\Filament\Admin\Resources\RealEstate\ProjectUnitsResource;
 use Filament\Actions;
 use App\Helpers\FilamentAstrotomic\Resources\Pages\Record\CreateTranslatable;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateUints extends CreateRecord{
+class CreateProjectUnits extends CreateRecord{
     use CreateTranslatable;
-    protected static string $resource = UintsResource::class;
+    protected static string $resource = ProjectUnitsResource::class;
     protected static bool $canCreateAnother = false;
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

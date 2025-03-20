@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Admin\Resources\RealEstate;
 
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
@@ -7,18 +6,20 @@ use App\Filament\Admin\Resources\RealEstate\_Custom\FormUnitsOptions;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitFilters;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsDefault;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsToggleable;
-use App\Filament\Admin\Resources\RealEstate\UintsResource\Pages;
+use App\Filament\Admin\Resources\RealEstate\ProjectUnitsResource\Pages;
+
 use App\FilamentCustom\Form\TextInputSlug;
 use App\FilamentCustom\Form\TextNameTextEditor;
-use App\Models\Admin\RealEstate\Listing;
 use App\FilamentCustom\View\PrintDatesWithIaActive;
 use App\FilamentCustom\View\PrintNameWithSlug;
 use App\FilamentCustom\Form\TextNameWithSlug;
 use App\FilamentCustom\Form\WebpImageUpload;
 use App\FilamentCustom\Table\CreatedDates;
 use App\FilamentCustom\Table\ImageColumnDef;
+use App\FilamentCustom\Table\TranslationTextColumn;
 use App\Helpers\FilamentAstrotomic\Forms\Components\TranslatableTabs;
 use App\Helpers\FilamentAstrotomic\TranslatableTab;
+use App\Models\Admin\RealEstate\Listing;
 use Astrotomic\Translatable\Translatable;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
@@ -26,6 +27,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -38,9 +40,8 @@ use Filament\Infolists\Components\TextEntry;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
-class UintsResource extends Resource {
+class ProjectUnitsResource extends Resource{
     use Translatable;
-
     protected static ?string $model = Listing::class;
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
     protected static ?string $recordTitleAttribute = 'name:en';
@@ -132,24 +133,15 @@ class UintsResource extends Resource {
             ->defaultSort('id', 'desc');
     }
 
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-#||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-    public static function getRelations(): array {
-        return [
-            //
-        ];
-    }
-
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    public static function getPages(): array {
+    public static function getPages(): array{
         return [
-            'index' => Pages\ListUints::route('/'),
-            'create' => Pages\CreateUints::route('/create'),
-            'view' => Pages\ViewUints::route('/{record}'),
-            'edit' => Pages\EditUints::route('/{record}/edit'),
+                        'index' => Pages\ListProjectUnits::route('/'),
+            'create' => Pages\CreateProjectUnits::route('/create'),
+            'view' => Pages\ViewProjectUnits::route('/{record}'),
+            'edit' => Pages\EditProjectUnits::route('/{record}/edit'),
         ];
     }
 
@@ -166,8 +158,8 @@ class UintsResource extends Resource {
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
-                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
-                ...PrintDatesWithIaActive::make()->getColumns(),
+                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns() ,
+                ...PrintDatesWithIaActive::make()->getColumns() ,
             ]);
     }
 

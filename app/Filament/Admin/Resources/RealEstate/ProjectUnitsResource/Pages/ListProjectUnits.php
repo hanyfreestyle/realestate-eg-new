@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Admin\Resources\RealEstate\UintsResource\Pages;
+namespace App\Filament\Admin\Resources\RealEstate\ProjectUnitsResource\Pages;
 
-use App\Filament\Admin\Resources\RealEstate\UintsResource;
+use App\Filament\Admin\Resources\RealEstate\ProjectUnitsResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;
 
-class ListUints extends ListRecords{
-    protected static string $resource = UintsResource::class;
+class ListProjectUnits extends ListRecords{
+    protected static string $resource = ProjectUnitsResource::class;
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||

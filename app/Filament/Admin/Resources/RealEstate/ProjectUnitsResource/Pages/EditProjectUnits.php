@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Admin\Resources\RealEstate\UintsResource\Pages;
+namespace App\Filament\Admin\Resources\RealEstate\ProjectUnitsResource\Pages;
 
-use App\Filament\Admin\Resources\RealEstate\UintsResource;
+use App\Filament\Admin\Resources\RealEstate\ProjectUnitsResource;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 use App\Helpers\FilamentAstrotomic\Resources\Pages\Record\EditTranslatable;
 
-class EditUints extends EditRecord{
-    protected static string $resource = UintsResource::class;
+class EditProjectUnits extends EditRecord{
+    protected static string $resource = ProjectUnitsResource::class;
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
