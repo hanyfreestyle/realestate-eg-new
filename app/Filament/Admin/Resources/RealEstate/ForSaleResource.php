@@ -10,6 +10,7 @@ use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsToggleable;
 use App\Filament\Admin\Resources\RealEstate\ForSaleResource\Pages;
 use App\FilamentCustom\Form\TextInputSlug;
 use App\FilamentCustom\Form\TextNameTextEditor;
+use App\Models\Admin\RealEstate\ForSale;
 use App\Models\Admin\RealEstate\Listing;
 use App\FilamentCustom\View\PrintDatesWithIaActive;
 use App\FilamentCustom\View\PrintNameWithSlug;
@@ -41,7 +42,8 @@ use Illuminate\Database\Eloquent\Model;
 class ForSaleResource extends Resource {
     use Translatable;
 
-    protected static ?string $model = Listing::class;
+//    protected static ?string $model = Listing::class;
+    protected static ?string $model = ForSale::class;
     protected static ?string $navigationIcon = 'heroicon-o-key';
     protected static ?string $recordTitleAttribute = 'name:en';
     protected static ?int $navigationSort = 2;
@@ -105,7 +107,7 @@ class ForSaleResource extends Resource {
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function table(Table $table): Table {
         return $table
-            ->query(fn() => Listing::query()->ForSale())
+//            ->query(fn() => Listing::query()->ForSale())
             ->columns([
                 TextColumn::make('id')->label('')->sortable()->searchable(),
                 ImageColumnDef::make('photo_thumbnail'),

@@ -19,6 +19,7 @@ use App\FilamentCustom\Table\ImageColumnDef;
 use App\Helpers\FilamentAstrotomic\Forms\Components\TranslatableTabs;
 use App\Helpers\FilamentAstrotomic\TranslatableTab;
 use App\Models\Admin\RealEstate\Listing;
+use App\Models\Admin\RealEstate\Projects;
 use Astrotomic\Translatable\Translatable;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Hidden;
@@ -38,7 +39,8 @@ use Illuminate\Database\Eloquent\Model;
 class ProjectResource extends Resource {
     use Translatable;
 
-    protected static ?string $model = Listing::class;
+//    protected static ?string $model = Listing::class;
+    protected static ?string $model = Projects::class;
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?string $recordTitleAttribute = 'name:en';
     protected static ?int $navigationSort = -10000000000000000;
@@ -102,7 +104,7 @@ class ProjectResource extends Resource {
 #||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     public static function table(Table $table): Table {
         return $table
-            ->query(fn() => Listing::query()->projects())
+//            ->query(fn() => Listing::query()->projects())
             ->columns([
                 TextColumn::make('id')->label('')->sortable()->searchable(),
                 ImageColumnDef::make('photo_thumbnail'),
