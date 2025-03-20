@@ -130,7 +130,7 @@ class ProjectResource extends Resource {
                 ]),
             ])
             ->recordUrl(fn($record) => static::getTableRecordUrl($record))
-            ->defaultSort('id', 'desc');
+            ->defaultSort('id');
     }
 
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
