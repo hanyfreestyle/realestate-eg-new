@@ -4,9 +4,9 @@ namespace App\Filament\Admin\Resources\RealEstate;
 
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
 use App\Filament\Admin\Resources\RealEstate\_Custom\FormProjectOptions;
-use App\Filament\Admin\Resources\RealEstate\_Custom\PrintDatesWithIaActive;
-use App\Filament\Admin\Resources\RealEstate\_Custom\PrintName;
-use App\Filament\Admin\Resources\RealEstate\_Custom\PrintProjectInfo;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintListingName;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintListingDates;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintPropertyInfo;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectDefault;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectFilters;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableProjectToggleable;
@@ -19,7 +19,6 @@ use App\FilamentCustom\Table\CreatedDates;
 use App\FilamentCustom\Table\ImageColumnDef;
 use App\Helpers\FilamentAstrotomic\Forms\Components\TranslatableTabs;
 use App\Helpers\FilamentAstrotomic\TranslatableTab;
-use App\Models\Admin\RealEstate\Listing;
 use App\Models\Admin\RealEstate\Projects;
 use Astrotomic\Translatable\Translatable;
 use Filament\Forms\Components\Group;
@@ -167,9 +166,9 @@ class ProjectResource extends Resource {
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
-                ...PrintName::make()->setUUID(false)->setSeo(true)->getColumns(),
-                ...PrintProjectInfo::make()->getColumns(),
-                ...PrintDatesWithIaActive::make()->getColumns(),
+                ...PrintListingName::make()->setSeo(true)->getColumns(),
+                ...PrintPropertyInfo::make()->getColumns(),
+                ...PrintListingDates::make()->getColumns(),
             ]);
     }
 

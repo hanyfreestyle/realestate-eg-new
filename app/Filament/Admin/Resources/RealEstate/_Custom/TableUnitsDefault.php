@@ -9,7 +9,8 @@ use Filament\Tables\Columns\TextColumn;
 
 class TableUnitsDefault {
     protected bool $toggleable = true;
-    protected bool $isProject = true; // القيمة الافتراضية
+    protected bool $isProject = true;
+    protected bool $isRelationship = false;
 
     public static function make(): static {
         return new static();
@@ -24,6 +25,12 @@ class TableUnitsDefault {
         $this->isProject = $value;
         return $this;
     }
+
+    public function isRelationship(bool $value = false): static {
+        $this->isRelationship = $value;
+        return $this;
+    }
+
 
     public function getColumns(): array {
 
@@ -46,16 +53,20 @@ class TableUnitsDefault {
             ->sortable()
             ->toggleable(isToggledHiddenByDefault: false);
 
-        $columns[] = TextColumn::make('location.name')
-            ->label(__('filament/RealEstate/listing.project_label.location_id'))
-            ->sortable()->searchable()
-            ->toggleable(isToggledHiddenByDefault: false);
+        if (!$this->isRelationship) {
 
-        $columns[] = TextColumn::make('developer.name')
-            ->label(__('filament/RealEstate/listing.project_label.developer_id'))
-            ->sortable()->searchable()
-            ->limit('25')
-            ->toggleable(isToggledHiddenByDefault: false);
+            $columns[] = TextColumn::make('location.name')
+                ->label(__('filament/RealEstate/listing.project_label.location_id'))
+                ->sortable()->searchable()
+                ->toggleable(isToggledHiddenByDefault: false);
+
+            $columns[] = TextColumn::make('developer.name')
+                ->label(__('filament/RealEstate/listing.project_label.developer_id'))
+                ->sortable()->searchable()
+                ->limit('25')
+                ->toggleable(isToggledHiddenByDefault: false);
+        }
+
 
         $columns[] = IconColumn::make('is_published')
             ->label(__('filament/def.is_active'))->boolean()

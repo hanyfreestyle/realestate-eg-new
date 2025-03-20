@@ -38,12 +38,12 @@ class UnitsRelationManager extends RelationManager {
             ->columns([
                 TextColumn::make('id')->label('')->sortable()->searchable(),
                 ImageColumnDef::make('photo_thumbnail'),
-                ...TableUnitsDefault::make()->isProject(false)->toggleable(false)->getColumns(),
-                ...TableUnitsToggleable::make()->toggleable(true)->getColumns(),
+                ...TableUnitsDefault::make()->isRelationship(true)->isProject(false)->toggleable(false)->getColumns(),
+                ...TableUnitsToggleable::make()->toggleable(false)->getColumns(),
                 ...CreatedDates::make()->toggleable(true)->getColumns(),
             ])
             ->filters([
-                ...TableUnitFilters::make()->isProject(false)->printLabel(false)->getColumns(),
+                ...TableUnitFilters::make()->isRelationship(true)->isProject(false)->printLabel(false)->getColumns(),
                 TrashedFilter::make()->label(''),
             ], layout: FiltersLayout::AboveContent)
             ->headerActions([

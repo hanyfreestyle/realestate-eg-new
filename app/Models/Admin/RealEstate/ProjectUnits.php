@@ -10,7 +10,7 @@ class ProjectUnits extends Listing {
 
     protected static function booted() {
         static::addGlobalScope('units', function ($query) {
-            $query->where('listing_type', 'Units');
+            $query->where('listing_type', 'Unit');
         });
     }
 }

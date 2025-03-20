@@ -13,6 +13,7 @@ class TableUnitFilters {
 
     protected bool $printLabel = true;
     protected bool $isProject = true; // القيمة الافتراضية
+    protected bool $isRelationship = false;
 
     public static function make(): static {
         return new static();
@@ -25,6 +26,11 @@ class TableUnitFilters {
 
     public function isProject(bool $value = true): static {
         $this->isProject = $value;
+        return $this;
+    }
+
+    public function isRelationship(bool $value = false): static {
+        $this->isRelationship = $value;
         return $this;
     }
 
@@ -69,25 +75,28 @@ class TableUnitFilters {
             $this->printLabel
         );
 
-        $filters[] = self::applyLabelOrPlaceholder(
-            SelectFilter::make('developer_id')
-                ->options(ListingCashDataTrait::getDataDeveloper(true))
-                ->multiple()
-                ->searchable()
-                ->preload(),
-            'filament/RealEstate/listing.project_label.developer_id',
-            $this->printLabel
-        );
+        if (!$this->isRelationship) {
+            $filters[] = self::applyLabelOrPlaceholder(
+                SelectFilter::make('developer_id')
+                    ->options(ListingCashDataTrait::getDataDeveloper(true))
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                'filament/RealEstate/listing.project_label.developer_id',
+                $this->printLabel
+            );
 
-        $filters[] = self::applyLabelOrPlaceholder(
-            SelectFilter::make('location_id')
-                ->options(ListingCashDataTrait::getDataLocation(true))
-                ->multiple()
-                ->searchable()
-                ->preload(),
-            'filament/RealEstate/listing.project_label.location_id',
-            $this->printLabel
-        );
+            $filters[] = self::applyLabelOrPlaceholder(
+                SelectFilter::make('location_id')
+                    ->options(ListingCashDataTrait::getDataLocation(true))
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                'filament/RealEstate/listing.project_label.location_id',
+                $this->printLabel
+            );
+        }
+
 
         return $filters;
 

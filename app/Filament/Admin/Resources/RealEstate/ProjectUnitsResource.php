@@ -4,23 +4,20 @@ namespace App\Filament\Admin\Resources\RealEstate;
 
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
 use App\Filament\Admin\Resources\RealEstate\_Custom\FormUnitsOptions;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintListingDates;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintListingName;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintProjectInfo;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitFilters;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsDefault;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsToggleable;
 use App\Filament\Admin\Resources\RealEstate\ProjectUnitsResource\Pages;
-
 use App\FilamentCustom\Form\TextInputSlug;
-use App\FilamentCustom\Form\TextNameTextEditor;
-use App\FilamentCustom\View\PrintDatesWithIaActive;
-use App\FilamentCustom\View\PrintNameWithSlug;
-use App\FilamentCustom\Form\TextNameWithSlug;
+use App\FilamentCustom\Form\TextNameTextEditor;;
 use App\FilamentCustom\Form\WebpImageUpload;
 use App\FilamentCustom\Table\CreatedDates;
 use App\FilamentCustom\Table\ImageColumnDef;
-use App\FilamentCustom\Table\TranslationTextColumn;
 use App\Helpers\FilamentAstrotomic\Forms\Components\TranslatableTabs;
 use App\Helpers\FilamentAstrotomic\TranslatableTab;
-use App\Models\Admin\RealEstate\Listing;
 use App\Models\Admin\RealEstate\ProjectUnits;
 use Astrotomic\Translatable\Translatable;
 use Filament\Forms\Components\Group;
@@ -29,16 +26,11 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Toggle;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Filament\Infolists\Components\Section as InfolistSection;
-use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\TextEntry;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -145,7 +137,7 @@ class ProjectUnitsResource extends Resource {
         return [
             'index' => Pages\ListProjectUnits::route('/'),
             'create' => Pages\CreateProjectUnits::route('/create'),
-            'view' => Pages\ViewProjectUnits::route('/{record}'),
+//            'view' => Pages\ViewProjectUnits::route('/{record}'),
             'edit' => Pages\EditProjectUnits::route('/{record}/edit'),
         ];
     }
@@ -163,8 +155,9 @@ class ProjectUnitsResource extends Resource {
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
-                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
-                ...PrintDatesWithIaActive::make()->getColumns(),
+                ...PrintListingName::make()->setSeo(true)->getColumns(),
+                ...PrintProjectInfo::make()->getColumns(),
+                ...PrintListingDates::make()->getColumns(),
             ]);
     }
 

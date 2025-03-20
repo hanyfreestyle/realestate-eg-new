@@ -4,6 +4,9 @@ namespace App\Filament\Admin\Resources\RealEstate;
 
 use App\Enums\RealEstate\EnumsRealEstateDatabaseTable;
 use App\Filament\Admin\Resources\RealEstate\_Custom\FormUnitsOptions;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintListingDates;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintListingName;
+use App\Filament\Admin\Resources\RealEstate\_Custom\PrintProjectInfo;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitFilters;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsDefault;
 use App\Filament\Admin\Resources\RealEstate\_Custom\TableUnitsToggleable;
@@ -11,10 +14,6 @@ use App\Filament\Admin\Resources\RealEstate\ForSaleResource\Pages;
 use App\FilamentCustom\Form\TextInputSlug;
 use App\FilamentCustom\Form\TextNameTextEditor;
 use App\Models\Admin\RealEstate\ForSale;
-use App\Models\Admin\RealEstate\Listing;
-use App\FilamentCustom\View\PrintDatesWithIaActive;
-use App\FilamentCustom\View\PrintNameWithSlug;
-use App\FilamentCustom\Form\TextNameWithSlug;
 use App\FilamentCustom\Form\WebpImageUpload;
 use App\FilamentCustom\Table\CreatedDates;
 use App\FilamentCustom\Table\ImageColumnDef;
@@ -27,15 +26,11 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Toggle;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Filament\Infolists\Components\Section as InfolistSection;
-use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\TextEntry;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -153,10 +148,10 @@ class ForSaleResource extends Resource {
         return [
             'index' => Pages\ListForSales::route('/'),
             'create' => Pages\CreateForSale::route('/create'),
-            'view' => Pages\ViewForSale::route('/{record}'),
+//            'view' => Pages\ViewForSale::route('/{record}'),
             'edit' => Pages\EditForSale::route('/{record}/edit'),
         ];
-    }
+     }
 
 
 
@@ -171,14 +166,9 @@ class ForSaleResource extends Resource {
     public static function infolist(Infolist $infolist): Infolist {
         return $infolist
             ->schema([
-//                InfolistSection::make('')
-//                    ->schema([
-//
-//                    ])->columns(5),
-                ...PrintNameWithSlug::make()->setUUID(true)->setSeo(true)->getColumns(),
-                ...PrintDatesWithIaActive::make()->getColumns(),
+                ...PrintListingName::make()->setSeo(true)->getColumns(),
+                ...PrintProjectInfo::make()->getColumns(),
+                ...PrintListingDates::make()->getColumns(),
             ]);
     }
-
-
 }

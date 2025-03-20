@@ -5,7 +5,7 @@ namespace App\Filament\Admin\Resources\RealEstate\_Custom;
 use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\TextEntry;
 
-class PrintName {
+class PrintListingName {
 
     protected bool $showSeo = false;
     protected bool $showUUid = false;

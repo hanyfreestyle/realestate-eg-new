@@ -7,7 +7,7 @@ use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 
-class PrintDatesWithIaActive {
+class PrintListingDates {
     protected bool $toggleable = true;
 
     public static function make(): static {
