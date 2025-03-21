@@ -26,7 +26,7 @@
                                                 {{__('filament/def.create')}}
                                             </x-filament::button>
                                         @elseif(isset($logInfo['soursLogTime']) and isset($logInfo['backUpLogTime']) and ($logInfo['soursLogTime'] < $logInfo['backUpLogTime']))
-                                            <x-filament::button wire:click="copyFiles('{{ $fileItem->cat_id }}')" color="info">
+                                            <x-filament::button wire:click="ImportFolder('{{ $fileItem->cat_id }}')" color="info">
                                                 {{__('filament/def.import')}}
                                             </x-filament::button>
                                         @endif
